@@ -1,4 +1,5 @@
 'use strict'
+const Database = use('Database')
 
 class ProductController {
 
@@ -7,7 +8,25 @@ class ProductController {
   }) {
     return view.render('admin/products/all')
   }
-  store() {
+  async store({
+    request,
+    response
+  }) {
+    try {
+      const post = request.post();
+      await Database.raw(`
+
+      INSERT INTO products (title, sku, material, description, brand_id, qty, size, user_id)
+      VALUES('${post.title}', '${post.sku}', '${post.material}', '${post.description}', 1, 2, 1, 1)
+      `)
+      return `<h1 style="color: green">Saved successfully</h1>`
+
+    } catch (error) {
+      console.log(error)
+      return `<h1 style="color: red">Sorry, there was an error</h1>
+      <h3>${error.sqlMessage}</h3>`
+    }
+
 
   }
   create({

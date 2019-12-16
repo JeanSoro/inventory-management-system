@@ -17,10 +17,11 @@
 const Route = use('Route')
 
 Route.get('/', 'PageController.index')
+
 Route.get('/admin/products', 'Admin/ProductController.index')
-Route.get('/admin/products', 'Admin/ProductController.store')
+Route.post('/admin/products', 'Admin/ProductController.store')
 Route.get('/admin/products/create', 'Admin/ProductController.create')
 Route.get('/admin/products/:id', 'Admin/ProductController.show')
 Route.get('/admin/products/:id/edit', 'Admin/ProductController.edit')
-Route.get('/admin/products/:id/edit', 'Admin/ProductController.update')
-Route.get('/admin/products/:id/delete', 'Admin/ProductController.delete')
+Route.put('/admin/products/:id/edit', 'Admin/ProductController.update')
+Route.delete('/admin/products/:id/delete', 'Admin/ProductController.delete')
