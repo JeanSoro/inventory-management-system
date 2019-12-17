@@ -53,8 +53,8 @@ class ProductController {
       const post = request.post();
       await Database.raw(`
 
-      INSERT INTO products (title, sku, material, description, brand_id, qty, size, user_id)
-      VALUES(${SqlString.escape(post.title)}, ${SqlString.escape(post.sku)}, ${SqlString.escape(post.material)}, ${SqlString.escape(post.description)}, ${parseInt(1)}, ${SqlString.escape(post.qty)}, ${SqlString.escape(post.size)}, ${parseInt(1)})
+      INSERT INTO products (title, sku, img_url, material, description, brand_id, qty, size, user_id)
+      VALUES(${SqlString.escape(post.title)}, ${SqlString.escape(post.sku)}, ${SqlString.escape(post.img_url)}, ${SqlString.escape(post.material)}, ${SqlString.escape(post.description)}, ${parseInt(1)}, ${SqlString.escape(post.qty)}, ${SqlString.escape(post.size)}, ${parseInt(1)})
       `)
       return response.redirect('/admin/products')
 
