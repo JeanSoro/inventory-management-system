@@ -164,11 +164,36 @@ class ProductController {
     }
 
   }
-  update({
+  async update({
     request,
-    response
+    response,
+    params
   }) {
+    try {
+      const id = params.id
+      const post = request.post();
+      await Database.raw(`
 
+        UPDATE products 
+        SET 
+        title = ${SqlString.escape(post.title)}, 
+        sku = ${SqlString.escape(post.sku)}, 
+        img_url = ${SqlString.escape(post.img_url)}, 
+        material = ${SqlString.escape(post.material)}, 
+        description = ${SqlString.escape(post.description)}, 
+        brand_id = ${parseInt(1)}, 
+        qty = ${SqlString.escape(post.qty)}, 
+        size = ${SqlString.escape(post.size)}, 
+        user_id = ${parseInt(1)}
+        WHERE id =${id}
+      `)
+      return response.redirect(`/admin/products/${id}`)
+
+    } catch (error) {
+      console.log(error)
+      return response.redirect('back')
+
+    }
   }
   delete({
     request,
