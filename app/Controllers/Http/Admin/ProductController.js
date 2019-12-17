@@ -119,12 +119,50 @@ class ProductController {
       // <h3>${error.sqlMessage}</h3>`
     }
   }
-  edit({
+  async edit({
     view,
     request,
-    response
+    response,
+    params
   }) {
-    return view.render('admin/products/edit')
+    try {
+      let product = await Database.raw(`
+
+      SELECT products.id,
+        products.title,
+        products.sku,
+        products.img_url,
+        products.description,
+        brands.title as brand,
+        concat(users.f_name, ' ', users.l_name) as user,
+        products.material,
+        products.qty,
+        products.size,
+        products.user_id,
+        products.created_at
+        FROM products
+        INNER JOIN brands
+        ON products.brand_id = brands.id
+        INNER JOIN users
+        ON products.user_id = users.id
+        WHERE products.id = ${params.id}
+        ORDER BY created_at ASC
+        LIMIT 1
+      
+      `)
+
+      product = product[0][0] //results
+
+      return view.render('admin/products/edit', {
+        product
+      })
+
+    } catch (error) {
+      console.log(error)
+      return response.redirect('back')
+
+    }
+
   }
   update({
     request,
