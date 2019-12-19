@@ -43,10 +43,10 @@ class BrandController {
       const post = request.post();
       await Database.raw(`
 
-      INSERT INTO products (title, sku, img_url, material, description, brand_id, qty, size, user_id)
-      VALUES(${SqlString.escape(post.title)}, ${SqlString.escape(post.sku)}, ${SqlString.escape(post.img_url)}, ${SqlString.escape(post.material)}, ${SqlString.escape(post.description)}, ${parseInt(1)}, ${SqlString.escape(post.qty)}, ${SqlString.escape(post.size)}, ${parseInt(1)})
+      INSERT INTO brands (title, img_url, description, user_id)
+      VALUES(${SqlString.escape(post.title)}, ${SqlString.escape(post.img_url)}, ${SqlString.escape(post.description)}, ${parseInt(1)})
       `)
-      return response.redirect('/admin/products')
+      return response.redirect('/admin/brands')
 
     } catch (error) {
       console.log(error)
@@ -61,7 +61,7 @@ class BrandController {
     request,
     response
   }) {
-    return view.render('admin/products/create')
+    return view.render('admin/brands/create')
   }
   async show({
     view,
@@ -70,21 +70,21 @@ class BrandController {
     params
   }) {
     try {
-      let product = await Database.raw(`
+      let brand = await Database.raw(`
 
-      SELECT products.id,
-        products.title,
-        products.sku,
-        products.img_url,
-        products.description,
+      SELECT brands.id,
+        brands.title,
+        brands.sku,
+        brands.img_url,
+        brands.description,
         brands.title as brand,
         concat(users.f_name, ' ', users.l_name) as user,
-        products.material,
-        products.qty,
-        products.size,
-        products.user_id,
-        products.created_at
-        FROM products
+        brands.material,
+        brands.qty,
+        brands.size,
+        brands.user_id,
+        brands.created_at
+        FROM brands
         INNER JOIN brands
         ON products.brand_id = brands.id
         INNER JOIN users
@@ -97,7 +97,7 @@ class BrandController {
 
       product = product[0][0] //results
 
-      return view.render('admin/products/show', {
+      return view.render('admin/brands/show', {
         product
       })
 
@@ -113,16 +113,16 @@ class BrandController {
     params
   }) {
     try {
-      let product = await Database.raw(`
+      let brand = await Database.raw(`
 
-      SELECT products.id,
-        products.title,
-        products.sku,
-        products.img_url,
-        products.description,
+      SELECT brands.id,
+        brands.title,
+        brands.sku,
+        brands.img_url,
+        brands.description,
         brands.title as brand,
         concat(users.f_name, ' ', users.l_name) as user,
-        products.material,
+        brands.material,
         products.qty,
         products.size,
         products.user_id,
