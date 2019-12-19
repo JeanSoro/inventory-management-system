@@ -17,7 +17,7 @@ class BrandController {
       brands.created_at, brands.updated_at FROM brands
       INNER JOIN users
       ON brands.user_id = users.id
-      ORDER BY created_at ASC
+      ORDER BY brands.title ASC
       
       `)
       allBrands = allBrands[0] //results
@@ -74,28 +74,21 @@ class BrandController {
 
       SELECT brands.id,
         brands.title,
-        brands.sku,
         brands.img_url,
         brands.description,
-        brands.title as brand,
         concat(users.f_name, ' ', users.l_name) as user,
-        brands.material,
-        brands.qty,
-        brands.size,
         brands.user_id,
-        brands.created_at
+        brands.created_at,
+        brands.updated_at
         FROM brands
-        INNER JOIN brands
-        ON products.brand_id = brands.id
         INNER JOIN users
-        ON products.user_id = users.id
-        WHERE products.id = ${params.id}
-        ORDER BY created_at ASC
+        ON brands.user_id = users.id
+        WHERE brands.id = ${params.id}
         LIMIT 1
       
       `)
 
-      product = product[0][0] //results
+      brand = brand[0][0] //results
 
       return view.render('admin/brands/show', {
         brand

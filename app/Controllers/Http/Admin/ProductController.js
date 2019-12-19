@@ -54,7 +54,7 @@ class ProductController {
       await Database.raw(`
 
       INSERT INTO products (title, sku, img_url, material, description, brand_id, qty, size, user_id)
-      VALUES(${SqlString.escape(post.title)}, ${SqlString.escape(post.sku)}, ${SqlString.escape(post.img_url)}, ${SqlString.escape(post.material)}, ${SqlString.escape(post.description)}, ${parseInt(1)}, ${SqlString.escape(post.qty)}, ${SqlString.escape(post.size)}, ${parseInt(1)})
+      VALUES(${SqlString.escape(post.title)}, ${SqlString.escape(post.sku)}, ${SqlString.escape(post.img_url)}, ${SqlString.escape(post.material)}, ${SqlString.escape(post.description)}, ${SqlString.escape(post.brand_id)}, ${SqlString.escape(post.qty)}, ${SqlString.escape(post.size)}, ${parseInt(1)})
       `)
       return response.redirect('/admin/products')
 
@@ -67,12 +67,20 @@ class ProductController {
 
 
   }
-  create({
+  async create({
     view,
     request,
     response
   }) {
-    return view.render('admin/products/create')
+    let brands = await Database.raw(`
+      SELECT * FROM brands
+        ORDER BY brands.title ASC
+      
+      `)
+    brands = brands[0]
+    return view.render('admin/products/create', {
+      brands
+    })
   }
   async show({
     view,
@@ -137,6 +145,7 @@ class ProductController {
         products.qty,
         products.size,
         products.user_id,
+        products.brand_id,
         products.created_at
         FROM products
         INNER JOIN brands
@@ -151,8 +160,16 @@ class ProductController {
 
       product = product[0][0] //results
 
+      let brands = await Database.raw(`
+      SELECT * FROM brands
+        ORDER BY brands.title ASC
+      
+      `)
+      brands = brands[0]
+
       return view.render('admin/products/edit', {
-        product
+        product,
+        brands
       })
 
     } catch (error) {
@@ -179,7 +196,7 @@ class ProductController {
         img_url = ${SqlString.escape(post.img_url)}, 
         material = ${SqlString.escape(post.material)}, 
         description = ${SqlString.escape(post.description)}, 
-        brand_id = ${parseInt(1)}, 
+        brand_id = ${SqlString.escape(post.brand_id)}, 
         qty = ${SqlString.escape(post.qty)}, 
         size = ${SqlString.escape(post.size)}, 
         user_id = ${parseInt(1)}
