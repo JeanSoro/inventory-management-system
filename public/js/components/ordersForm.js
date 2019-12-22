@@ -69,8 +69,6 @@ var Popup = function (_Component) {
       _this.setState(newState, function () {
         console.log(_this.state);
       });
-    }, _this.closePopup = function () {
-      _this.props.closePopup();
     }, _this.showAllProducts = function () {
 
       if (_this.props.allProducts != '') {
@@ -82,6 +80,17 @@ var Popup = function (_Component) {
           );
         });
       }
+    }, _this.closePopup = function () {
+      _this.props.closePopup();
+    }, _this.saveItemButton = function () {
+      var filteredProducts = _this.props.allProducts.filter(function (product) {
+        return product.id === _this.state.form.product;
+      });
+      var itemData = {
+        productInfo: filteredProducts[0],
+        qtyBuying: _this.state.form.qty
+      };
+      _this.props.addItemToList(itemData);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -116,16 +125,7 @@ var Popup = function (_Component) {
                 _react2.default.createElement(
                   'select',
                   { className: 'custom-select', name: 'product', value: this.state.form.product, onChange: this.inputChange },
-                  _react2.default.createElement(
-                    'option',
-                    { value: '0' },
-                    'Nike'
-                  ),
-                  _react2.default.createElement(
-                    'option',
-                    { value: '1' },
-                    'Adidas'
-                  )
+                  this.showAllProducts()
                 )
               ),
               _react2.default.createElement(
@@ -139,17 +139,61 @@ var Popup = function (_Component) {
                 _react2.default.createElement(
                   'select',
                   { className: 'custom-select', name: 'qty', value: this.state.form.qty, onChange: this.inputChange },
-                  this.showAllProducts()
+                  _react2.default.createElement(
+                    'option',
+                    { value: '1' },
+                    '1'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '2' },
+                    '2'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '3' },
+                    '3'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '4' },
+                    '4'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '5' },
+                    '5'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '6' },
+                    '6'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '7' },
+                    '7'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '8' },
+                    '8'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '9' },
+                    '9'
+                  )
                 )
               ),
               _react2.default.createElement(
                 'div',
-                { className: 'add-btn btn btn-primary mb-3' },
+                { className: 'add-btn btn btn-primary mb-3', onClick: this.saveItemButton },
                 'save item'
               ),
               _react2.default.createElement(
                 'div',
-                { className: 'add-btn btn btn-primary mb-3', onClick: this.closePopup },
+                { className: 'add-btn btn btn-danger mb-3', onClick: this.closePopup },
                 'cancel'
               )
             )
@@ -237,6 +281,7 @@ var Layout = function (_Component) {
         payment_type: 'paypal'
       },
       allProducts: '',
+      allItems: [],
       showPopup: false
     }, _this.inputChange = function (e) {
       var name = e.target.name;
@@ -288,8 +333,6 @@ var Layout = function (_Component) {
               allProducts = allProducts.data;
               _this.setState({
                 allProducts: allProducts
-              }, function () {
-                return console.log(_this.state);
               });
               _context.next = 11;
               break;
@@ -306,7 +349,16 @@ var Layout = function (_Component) {
           }
         }
       }, _callee, _this2, [[0, 8]]);
-    })), _temp), _possibleConstructorReturn(_this, _ret);
+    })), _this.addItemToList = function (item) {
+      var allItems = _this.state.allItems;
+      var oldState = _this.state;
+      var newState = (0, _reactAddonsUpdate2.default)(oldState, {
+        allItems: { $push: [item] }
+      });
+      _this.setState(newState, function () {
+        console.log('This is the new state ' + _this.state);
+      });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Layout, [{
@@ -510,7 +562,8 @@ var Layout = function (_Component) {
           ),
           _react2.default.createElement(_popup2.default, { showPopup: this.state.showPopup,
             closePopup: this.togglePopup,
-            allProducts: this.state.allProducts
+            allProducts: this.state.allProducts,
+            addItemToList: this.addItemToList
           })
         ),
         _react2.default.createElement(

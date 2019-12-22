@@ -24,6 +24,7 @@ class Layout extends Component {
       payment_type: 'paypal'
     },
     allProducts: '',
+    allItems: [],
     showPopup: false
   }
 
@@ -74,10 +75,21 @@ class Layout extends Component {
       allProducts = allProducts.data
       this.setState({
         allProducts
-      }, () => console.log(this.state))
+      })
     } catch (error) {
       console.log(error)
     }
+  }
+
+  addItemToList = (item) => {
+    let allItems = this.state.allItems;
+    let oldState = this.state;
+    let newState = update(oldState, {
+      allItems: { $push: [item] }
+    })
+    this.setState(newState, () => {
+      console.log(`This is the new state ${this.state}`)
+    })
   }
 
 
@@ -171,6 +183,7 @@ class Layout extends Component {
           <Popup showPopup={this.state.showPopup}
             closePopup={this.togglePopup}
             allProducts={this.state.allProducts}
+            addItemToList={this.addItemToList}
           />
         </div>
         <div className="form-group">

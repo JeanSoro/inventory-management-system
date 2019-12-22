@@ -33,9 +33,6 @@ export default class Popup extends Component {
     })
   }
 
-  closePopup = () => {
-    this.props.closePopup()
-  }
 
   showAllProducts = () => {
 
@@ -44,6 +41,19 @@ export default class Popup extends Component {
         (<option key={item.id} value={item.id}>{item.title}</option>))
     }
 
+  }
+
+  closePopup = () => {
+    this.props.closePopup()
+  }
+
+  saveItemButton = () => {
+    let filteredProducts = this.props.allProducts.filter((product) => product.id === this.state.form.product)
+    let itemData = {
+      productInfo: filteredProducts[0],
+      qtyBuying: this.state.form.qty
+    }
+    this.props.addItemToList(itemData)
   }
 
 
@@ -59,20 +69,28 @@ export default class Popup extends Component {
               <div className="form-group">
                 <label htmlFor="">Product</label>
                 <select className="custom-select" name="product" value={this.state.form.product} onChange={this.inputChange}>
-                  <option value="0">Nike</option>
-                  <option value="1">Adidas</option>
+                  {this.showAllProducts()}
                 </select>
               </div>
               <div className="form-group">
                 <label htmlFor="">Quantity</label>
                 <select className="custom-select" name="qty" value={this.state.form.qty} onChange={this.inputChange}>
-                  {this.showAllProducts()}
+
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
                 </select>
               </div>
-              <div className="add-btn btn btn-primary mb-3">
+              <div className="add-btn btn btn-primary mb-3" onClick={this.saveItemButton}>
                 save item
                   </div>
-              <div className="add-btn btn btn-primary mb-3" onClick={this.closePopup}>
+              <div className="add-btn btn btn-danger mb-3" onClick={this.closePopup}>
                 cancel
                 </div>
             </div>
