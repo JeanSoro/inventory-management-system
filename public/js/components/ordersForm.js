@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 233:
+/***/ 241:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12,15 +12,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(76);
+var _react = __webpack_require__(77);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(77);
+var _reactDom = __webpack_require__(78);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactAddonsUpdate = __webpack_require__(151);
+var _reactAddonsUpdate = __webpack_require__(153);
 
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
@@ -34,8 +34,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UsaStates = __webpack_require__(153).UsaStates;
-var countries = __webpack_require__(150);
+var UsaStates = __webpack_require__(155).UsaStates;
+var countries = __webpack_require__(152);
 
 var Popup = function (_Component) {
   _inherits(Popup, _Component);
@@ -53,7 +53,8 @@ var Popup = function (_Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Popup.__proto__ || Object.getPrototypeOf(Popup)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       form: {
-        f_name: ''
+        product: '',
+        qty: 1
 
       }
     }, _this.inputChange = function (e) {
@@ -70,6 +71,17 @@ var Popup = function (_Component) {
       });
     }, _this.closePopup = function () {
       _this.props.closePopup();
+    }, _this.showAllProducts = function () {
+
+      if (_this.props.allProducts != '') {
+        return _this.props.allProducts.map(function (item) {
+          return _react2.default.createElement(
+            'option',
+            { key: item.id, value: item.id },
+            item.title
+          );
+        });
+      }
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -103,11 +115,16 @@ var Popup = function (_Component) {
                 ),
                 _react2.default.createElement(
                   'select',
-                  { className: 'custom-select', name: 'product' },
+                  { className: 'custom-select', name: 'product', value: this.state.form.product, onChange: this.inputChange },
                   _react2.default.createElement(
                     'option',
                     { value: '0' },
-                    'Title / Quantity'
+                    'Nike'
+                  ),
+                  _react2.default.createElement(
+                    'option',
+                    { value: '1' },
+                    'Adidas'
                   )
                 )
               ),
@@ -121,12 +138,8 @@ var Popup = function (_Component) {
                 ),
                 _react2.default.createElement(
                   'select',
-                  { className: 'custom-select', name: 'qty' },
-                  _react2.default.createElement(
-                    'option',
-                    { value: '0' },
-                    '1'
-                  )
+                  { className: 'custom-select', name: 'qty', value: this.state.form.qty, onChange: this.inputChange },
+                  this.showAllProducts()
                 )
               ),
               _react2.default.createElement(
@@ -153,7 +166,7 @@ exports.default = Popup;
 
 /***/ }),
 
-/***/ 237:
+/***/ 262:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -161,23 +174,29 @@ exports.default = Popup;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(76);
+var _react = __webpack_require__(77);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(77);
+var _reactDom = __webpack_require__(78);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactAddonsUpdate = __webpack_require__(151);
+var _reactAddonsUpdate = __webpack_require__(153);
 
 var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
-var _popup = __webpack_require__(233);
+var _popup = __webpack_require__(241);
 
 var _popup2 = _interopRequireDefault(_popup);
 
+var _axios = __webpack_require__(240);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -187,14 +206,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UsaStates = __webpack_require__(153).UsaStates;
-var countries = __webpack_require__(150);
+var UsaStates = __webpack_require__(155).UsaStates;
+var countries = __webpack_require__(152);
 
 var Layout = function (_Component) {
   _inherits(Layout, _Component);
 
   function Layout() {
-    var _ref;
+    var _ref,
+        _this2 = this;
 
     var _temp, _this, _ret;
 
@@ -216,6 +236,7 @@ var Layout = function (_Component) {
         postal_code: '',
         payment_type: 'paypal'
       },
+      allProducts: '',
       showPopup: false
     }, _this.inputChange = function (e) {
       var name = e.target.name;
@@ -251,10 +272,49 @@ var Layout = function (_Component) {
       _this.setState({
         showPopup: !_this.state.showPopup
       });
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    }, _this.getAllProducts = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var allProducts;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return _axios2.default.get('/api/admin/products');
+
+            case 3:
+              allProducts = _context.sent;
+
+              allProducts = allProducts.data;
+              _this.setState({
+                allProducts: allProducts
+              }, function () {
+                return console.log(_this.state);
+              });
+              _context.next = 11;
+              break;
+
+            case 8:
+              _context.prev = 8;
+              _context.t0 = _context['catch'](0);
+
+              console.log(_context.t0);
+
+            case 11:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2, [[0, 8]]);
+    })), _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Layout, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.getAllProducts();
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -448,7 +508,10 @@ var Layout = function (_Component) {
               )
             )
           ),
-          _react2.default.createElement(_popup2.default, { showPopup: this.state.showPopup, closePopup: this.togglePopup })
+          _react2.default.createElement(_popup2.default, { showPopup: this.state.showPopup,
+            closePopup: this.togglePopup,
+            allProducts: this.state.allProducts
+          })
         ),
         _react2.default.createElement(
           'div',
@@ -472,4 +535,4 @@ _reactDom2.default.render(_react2.default.createElement(Layout, null), ordersFor
 
 /***/ })
 
-},[237]);
+},[262]);

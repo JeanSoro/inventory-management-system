@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import update from 'react-addons-update'
 import Popup from './popup.js'
+import axios from 'axios'
 
 let UsaStates = require('usa-states').UsaStates;
 let countries = require('country-list');
@@ -22,6 +23,7 @@ class Layout extends Component {
       postal_code: '',
       payment_type: 'paypal'
     },
+    allProducts: '',
     showPopup: false
   }
 
@@ -61,6 +63,23 @@ class Layout extends Component {
       showPopup: !this.state.showPopup
     })
   }
+
+  componentWillMount() {
+    this.getAllProducts()
+  }
+
+  getAllProducts = async () => {
+    try {
+      let allProducts = await axios.get('/api/admin/products')
+      allProducts = allProducts.data
+      this.setState({
+        allProducts
+      }, () => console.log(this.state))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   render() {
     return (
@@ -149,7 +168,10 @@ class Layout extends Component {
                 </div>
             </div>
           </div>
-          <Popup showPopup={this.state.showPopup} closePopup={this.togglePopup} />
+          <Popup showPopup={this.state.showPopup}
+            closePopup={this.togglePopup}
+            allProducts={this.state.allProducts}
+          />
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-flat btn-outline-primary mb-3">Submit</button>
