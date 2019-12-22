@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import update from 'react-addons-update'
+import Popup from './popup.js'
 
 let UsaStates = require('usa-states').UsaStates;
 let countries = require('country-list');
@@ -8,21 +9,20 @@ let countries = require('country-list');
 
 
 class Layout extends Component {
-  constructor() {
-    super()
-    this.state = {
-      form: {
-        f_name: '',
-        l_name: '',
-        address: '',
-        address_2: '',
-        city: '',
-        state: 'CA',
-        country: 'US',
-        postal_code: '',
-        payment_type: 'paypal'
-      }
-    }
+
+  state = {
+    form: {
+      f_name: '',
+      l_name: '',
+      address: '',
+      address_2: '',
+      city: '',
+      state: 'CA',
+      country: 'US',
+      postal_code: '',
+      payment_type: 'paypal'
+    },
+    showPopup: false
   }
 
 
@@ -54,6 +54,12 @@ class Layout extends Component {
     return allCountries.map((item) => (<option key={item.code} value={item.code}>{item.name}</option>
 
     ))
+  }
+
+  togglePopup = () => {
+    this.setState({
+      showPopup: !this.state.showPopup
+    })
   }
 
   render() {
@@ -136,39 +142,14 @@ class Layout extends Component {
           </div>
           <div className="col-md-3">
             <div className="item-box">
-              <div className="add_item_button">
+              <div className="add_item_button" onClick={this.togglePopup}>
+
                 <span>+</span>
                 Add New Item
                 </div>
             </div>
           </div>
-          <div className="popup">
-            <div className="container-box">
-              <div className="row">
-                <div className="col-md-12">
-                  <h2>Add Item to order</h2>
-                  <div className="form-group">
-                    <label htmlFor="">Product</label>
-                    <select className="custom-select" name="product">
-                      <option value="0">Title / Quantity</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="">Quantity</label>
-                    <select className="custom-select" name="qty">
-                      <option value="0">1</option>
-                    </select>
-                  </div>
-                  <div className="add-btn btn btn-primary mb-3">
-                    save item
-                  </div>
-                  <div className="add-btn btn btn-primary mb-3">
-                    cancel;
-                </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Popup showPopup={this.state.showPopup} closePopup={this.togglePopup} />
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-flat btn-outline-primary mb-3">Submit</button>
