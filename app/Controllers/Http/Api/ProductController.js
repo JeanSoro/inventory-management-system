@@ -14,6 +14,7 @@ class ProductController {
       SELECT products.id,
         products.title,
         products.sku,
+        products.img_url,
         brands.title as brand,
         concat(users.f_name, ' ', users.l_name) as user,
         products.material,

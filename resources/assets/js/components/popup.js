@@ -48,12 +48,13 @@ export default class Popup extends Component {
   }
 
   saveItemButton = () => {
-    let filteredProducts = this.props.allProducts.filter((product) => product.id === this.state.form.product)
+    let filteredProducts = this.props.allProducts.filter((product) => product.id == this.state.form.product)
     let itemData = {
       productInfo: filteredProducts[0],
       qtyBuying: this.state.form.qty
     }
     this.props.addItemToList(itemData)
+    this.props.closePopup()
   }
 
 
@@ -69,6 +70,9 @@ export default class Popup extends Component {
               <div className="form-group">
                 <label htmlFor="">Product</label>
                 <select className="custom-select" name="product" value={this.state.form.product} onChange={this.inputChange}>
+                  <option value="none">
+                    Select a sneaker
+                </option>
                   {this.showAllProducts()}
                 </select>
               </div>

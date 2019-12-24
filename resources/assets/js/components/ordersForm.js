@@ -92,6 +92,29 @@ class Layout extends Component {
     })
   }
 
+  showAllItems = () => {
+
+    return this.state.allItems.map((item) => (
+      <div key={item.productInfo.id} className="col-md-3">
+        <div className="item-box">
+
+          <div className="item-img" style={{ background: `url("${item.productInfo.img_url}")` }}>
+            <div className="item-delete">
+              <i className="ti-close"></i>
+            </div>
+          </div>
+          <div className="title">
+            {item.productInfo.title}
+          </div>
+          <div className="quantity">
+            <label className="col-form-label">Quantity</label>
+            <h4>{item.qtyBuying}</h4>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+
 
   render() {
     return (
@@ -154,23 +177,7 @@ class Layout extends Component {
           <div className="col-md-12">
             <h3>Order Items</h3>
           </div>
-          <div className="col-md-3">
-            <div className="item-box">
-
-              <div className="item-img" style={{ background: "url('https://ilbeldes-cdn.sirv.com/prestashop/img/p/1/7/3/7/edition-1-vintage-femme.jpg')" }}>
-                <div className="item-delete">
-                  <i className="ti-close"></i>
-                </div>
-              </div>
-              <div className="title">
-                sneaker title
-                  </div>
-              <div className="quantity">
-                <label className="col-form-label">Quantity</label>
-                <h4>4</h4>
-              </div>
-            </div>
-          </div>
+          {this.showAllItems()}
           <div className="col-md-3">
             <div className="item-box">
               <div className="add_item_button" onClick={this.togglePopup}>

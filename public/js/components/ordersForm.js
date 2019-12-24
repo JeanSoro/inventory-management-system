@@ -84,13 +84,14 @@ var Popup = function (_Component) {
       _this.props.closePopup();
     }, _this.saveItemButton = function () {
       var filteredProducts = _this.props.allProducts.filter(function (product) {
-        return product.id === _this.state.form.product;
+        return product.id == _this.state.form.product;
       });
       var itemData = {
         productInfo: filteredProducts[0],
         qtyBuying: _this.state.form.qty
       };
       _this.props.addItemToList(itemData);
+      _this.props.closePopup();
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -125,6 +126,11 @@ var Popup = function (_Component) {
                 _react2.default.createElement(
                   'select',
                   { className: 'custom-select', name: 'product', value: this.state.form.product, onChange: this.inputChange },
+                  _react2.default.createElement(
+                    'option',
+                    { value: 'none' },
+                    'Select a sneaker'
+                  ),
                   this.showAllProducts()
                 )
               ),
@@ -358,6 +364,46 @@ var Layout = function (_Component) {
       _this.setState(newState, function () {
         console.log('This is the new state ' + _this.state);
       });
+    }, _this.showAllItems = function () {
+
+      return _this.state.allItems.map(function (item) {
+        return _react2.default.createElement(
+          'div',
+          { key: item.productInfo.id, className: 'col-md-3' },
+          _react2.default.createElement(
+            'div',
+            { className: 'item-box' },
+            _react2.default.createElement(
+              'div',
+              { className: 'item-img', style: { background: 'url("' + item.productInfo.img_url + '")' } },
+              _react2.default.createElement(
+                'div',
+                { className: 'item-delete' },
+                _react2.default.createElement('i', { className: 'ti-close' })
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'title' },
+              item.productInfo.title
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'quantity' },
+              _react2.default.createElement(
+                'label',
+                { className: 'col-form-label' },
+                'Quantity'
+              ),
+              _react2.default.createElement(
+                'h4',
+                null,
+                item.qtyBuying
+              )
+            )
+          )
+        );
+      });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -506,42 +552,7 @@ var Layout = function (_Component) {
               'Order Items'
             )
           ),
-          _react2.default.createElement(
-            'div',
-            { className: 'col-md-3' },
-            _react2.default.createElement(
-              'div',
-              { className: 'item-box' },
-              _react2.default.createElement(
-                'div',
-                { className: 'item-img', style: { background: "url('https://ilbeldes-cdn.sirv.com/prestashop/img/p/1/7/3/7/edition-1-vintage-femme.jpg')" } },
-                _react2.default.createElement(
-                  'div',
-                  { className: 'item-delete' },
-                  _react2.default.createElement('i', { className: 'ti-close' })
-                )
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'title' },
-                'sneaker title'
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'quantity' },
-                _react2.default.createElement(
-                  'label',
-                  { className: 'col-form-label' },
-                  'Quantity'
-                ),
-                _react2.default.createElement(
-                  'h4',
-                  null,
-                  '4'
-                )
-              )
-            )
-          ),
+          this.showAllItems(),
           _react2.default.createElement(
             'div',
             { className: 'col-md-3' },
