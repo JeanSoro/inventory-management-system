@@ -364,9 +364,17 @@ var Layout = function (_Component) {
       _this.setState(newState, function () {
         console.log('This is the new state ' + _this.state);
       });
+    }, _this.removeItem = function (index) {
+      var oldState = _this.state;
+      var newState = (0, _reactAddonsUpdate2.default)(oldState, {
+        allItems: {
+          $splice: [[index, 1]]
+        }
+      });
+      _this.setState(newState);
     }, _this.showAllItems = function () {
 
-      return _this.state.allItems.map(function (item) {
+      return _this.state.allItems.map(function (item, index) {
         return _react2.default.createElement(
           'div',
           { key: item.productInfo.id, className: 'col-md-3' },
@@ -378,7 +386,7 @@ var Layout = function (_Component) {
               { className: 'item-img', style: { background: 'url("' + item.productInfo.img_url + '")' } },
               _react2.default.createElement(
                 'div',
-                { className: 'item-delete' },
+                { className: 'item-delete', onClick: _this.removeItem.bind(null, index) },
                 _react2.default.createElement('i', { className: 'ti-close' })
               )
             ),
