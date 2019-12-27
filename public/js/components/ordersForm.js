@@ -298,9 +298,7 @@ var Layout = function (_Component) {
           $merge: _defineProperty({}, name, value)
         }
       });
-      _this.setState(newState, function () {
-        console.log(_this.state);
-      });
+      _this.setState(newState);
     }, _this.showStates = function () {
       var usStates = new UsaStates();
       return usStates.states.map(function (item) {
@@ -405,11 +403,16 @@ var Layout = function (_Component) {
         }
       }, _callee2, _this2, [[0, 7]]);
     })), _this.showAllItems = function () {
+      var randomKey = function randomKey() {
+        var randomNumber = '_' + Math.random().toString(36).substr(2, 9);
+        randomNumber += 3;
+        return randomNumber;
+      };
 
       return _this.state.allItems.map(function (item, index) {
         return _react2.default.createElement(
           'div',
-          { key: item.productInfo.id, className: 'col-md-3' },
+          { key: randomKey(), className: 'col-md-3' },
           _react2.default.createElement(
             'div',
             { className: 'item-box' },

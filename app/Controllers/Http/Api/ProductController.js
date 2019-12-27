@@ -14,12 +14,14 @@ class ProductController {
       SELECT products.id,
         products.title,
         products.sku,
+        products.description,
         products.img_url,
         brands.title as brand,
         concat(users.f_name, ' ', users.l_name) as user,
         products.material,
         products.qty,
         products.size,
+        products.brand_id,
         products.user_id,
         products.created_at
         FROM products
@@ -65,6 +67,28 @@ class ProductController {
       `)
 
       const order_id = order[0].insertId
+
+      post.allItems.map((item) => {
+        const insertItem = Database.raw(`
+
+        INSERT INTO items (title, sku, material, description, brand_id, qty, size, order_id, user_id)
+        VALUES(${SqlString.escape(item.productInfo.title)},
+        ${SqlString.escape(item.productInfo.sku)}, 
+        ${SqlString.escape(item.productInfo.material)}, 
+        ${SqlString.escape(item.productInfo.description)}, 
+        ${SqlString.escape(item.productInfo.brand_id)}, 
+        ${SqlString.escape(item.productInfo.qty)}, 
+        ${SqlString.escape(item.productInfo.size)}, 
+        ${SqlString.escape(order_id)}, 
+        ${parseInt(1)});
+        
+        `).then(() => {
+
+          }).catch(e => console.log(e))
+
+      })
+
+
 
       return {
         post,
