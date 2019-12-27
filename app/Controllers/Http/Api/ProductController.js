@@ -34,7 +34,6 @@ class ProductController {
 
       return allProducts
 
-
     } catch (error) {
       console.log(error)
       return response.redirect('back')
@@ -43,6 +42,47 @@ class ProductController {
     }
 
   }
+
+  async store({
+    request,
+    response
+  }) {
+    try {
+      const post = request.post();
+      const order = await Database.raw(`
+
+      INSERT INTO orders (f_name, l_name, address, address2, city, state, country, payment_type, user_id)
+      VALUES(${SqlString.escape(post.form.f_name)},
+      ${SqlString.escape(post.form.l_name)}, 
+      ${SqlString.escape(post.form.address)}, 
+      ${SqlString.escape(post.form.address2)}, 
+      ${SqlString.escape(post.form.city)}, 
+      ${SqlString.escape(post.form.state)}, 
+      ${SqlString.escape(post.form.country)}, 
+      ${SqlString.escape(post.form.payment_type)}, 
+      ${parseInt(1)});
+      
+      `)
+
+      const order_id = order[0].insertId
+
+      return {
+        post,
+        order_id: order[0].insertId
+      }
+      return response.redirect('/admin/products')
+
+    } catch (error) {
+      console.log(error)
+      return response.redirect('back')
+
+    }
+  }
+
+
+
+
+
 }
 
 module.exports = ProductController

@@ -102,6 +102,20 @@ class Layout extends Component {
     this.setState(newState)
   }
 
+  submitForm = async () => {
+
+    try {
+      const csrf = document.getElementsByName("_csrf")[0].value
+      let submit = await axios.post('/api/admin/products', {
+        _csrf: csrf,
+        form: this.state.form,
+        allItems: this.state.allItems
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   showAllItems = () => {
 
     return this.state.allItems.map((item, index) => (
@@ -204,7 +218,7 @@ class Layout extends Component {
           />
         </div>
         <div className="form-group">
-          <button type="submit" className="btn btn-flat btn-outline-primary mb-3">Submit</button>
+          <div onClick={this.submitForm} className="btn btn-flat btn-outline-primary mb-3">Submit</div>
         </div>
       </form>
     )
